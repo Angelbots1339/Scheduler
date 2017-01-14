@@ -29,8 +29,12 @@ public class TeleOp {
     	Looper.getInstance().update();
     	Robot.HardwareAdapter.checkTriggers();
 		SmartDashboard.putNumber("left drive encoder", Robot.HardwareAdapter.getLeftDriveEnc());
-		SmartDashboard.putNumber("right encoder", Robot.HardwareAdapter.getRightDriveEnc());
+		SmartDashboard.putNumber("right drive encoder", Robot.HardwareAdapter.getRightDriveEnc());
 		SmartDashboard.putNumber("Gyro",  Robot.HardwareAdapter.kSpartanGyro.getAngle());
+		SmartDashboard.putNumber("encoderConversion", getClicksInches(26));
+		SmartDashboard.putNumber("Spline Angle", Robot.chassis.chassisSP.getAngle());
+		SmartDashboard.putNumber("inner dist", Robot.chassis.chassisSP.getInnerDistance());
+		SmartDashboard.putNumber("Gyro rate change", Robot.HardwareAdapter.kSpartanGyro.getRate());
     }
     /** This method is called before TeleOp has run.*/
 	public void init(){	
@@ -41,4 +45,9 @@ public class TeleOp {
 	}
 	/** This method is called after TeleOp has run.*/
 
+	public static int getClicksInches(double distance){
+		double clicks = distance * 32.2554018;
+		return (int)clicks;
+	}
+	
 }

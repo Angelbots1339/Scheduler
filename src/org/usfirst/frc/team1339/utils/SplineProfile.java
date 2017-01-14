@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1339.utils;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SplineProfile {
 
@@ -8,7 +9,7 @@ public class SplineProfile {
 	splineCruiseVel, maxAcc, cruiseVelScaleFactor, splineRadius,
 	splineAngle, totalOuterDistance, lastInnerPos = 0, sumAngle = 0,
 	leftStartPos, rightStartPos, lastRightError = 0,
-	lastLeftError = 0, splineDecelerateVel;
+	lastLeftError = 0, splineDecelerateVel, totalInnerDistance;
 	private double lastTime;
 	public Segment currentOuterSegment = new Segment(0, 0, 0);
 	public Segment currentInnerSegment = new Segment(0, 0, 0);
@@ -51,6 +52,7 @@ public class SplineProfile {
 		this.angleInverted = angle < 0;
 		this.splineRadius = Math.abs(radius);
 		this.totalOuterDistance = this.splineRadius * this.splineAngle;
+		this.totalInnerDistance = (this.splineRadius - this.width) * this.splineAngle;
 		this.cruiseVel = getCruiseVel(this.totalOuterDistance);
 		this.splineCruiseVel = getSplineCruiseVel(this.totalOuterDistance);
 		this.splineBackwards = !direction;
@@ -73,6 +75,7 @@ public class SplineProfile {
 		this.splineAngle = Math.abs(angle);
 		this.splineRadius = Math.abs(radius);
 		this.totalOuterDistance = this.splineRadius * this.splineAngle;
+		this.totalInnerDistance = (this.splineRadius - this.width) * this.splineAngle;
 		this.cruiseVel = startVel;
 		this.splineCruiseVel = getSplineCruiseVel(this.totalOuterDistance);
 		this.splineBackwards = !direction;
@@ -109,6 +112,10 @@ public class SplineProfile {
 		return sumAngle;
 	}
 	
+	public double getInnerDistance(){
+		return this.totalInnerDistance;
+	}
+	
 	public void initializeProfile(double leftCurrentPos, double rightCurrentPos){
 		this.leftStartPos = leftCurrentPos;
 		this.rightStartPos = rightCurrentPos;
@@ -117,6 +124,7 @@ public class SplineProfile {
 		nextOuterSegment = new Segment(0, 0, 0);
 		nextInnerSegment = new Segment(0, 0, 0);
 		lastTime = Timer.getFPGATimestamp();
+		SmartDashboard.putNumber("Spline Goal", this.totalOuterDistance);
 	}
 	
 	public void calculate(double leftDistance, double rightDistance){

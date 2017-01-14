@@ -1,7 +1,9 @@
 package org.usfirst.frc.team1339.utils;
 
 import org.usfirst.frc.team1339.commands.ArcadeDrive;
+import org.usfirst.frc.team1339.commands.GyroPID;
 import org.usfirst.frc.team1339.commands.MotionProfileTest;
+import org.usfirst.frc.team1339.commands.SplineTest;
 import org.usfirst.frc.team1339.commands.TankDrive;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -23,9 +25,9 @@ public class HardwareAdapter{
 	
 	//Encoders
 	public Encoder kRightDriveEncoder = new Encoder(
-			Constants.kRightDriveAEncoder , Constants.kRightDriveBEncoder);
+			Constants.kRightDriveAEncoder , Constants.kRightDriveBEncoder, true);
 	public Encoder kLeftDriveEncoder = new Encoder(
-			Constants.kLeftDriveAEncoder , Constants.kLeftDriveBEncoder, true);
+			Constants.kLeftDriveAEncoder , Constants.kLeftDriveBEncoder);
 	public ADXRS450_Gyro kSpartanGyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
 	
 	//Joysticks
@@ -77,8 +79,10 @@ public class HardwareAdapter{
 	}
 	
 	public void checkTriggers(){
-		XButton.whenPressed(new MotionProfileTest(4000));
+		XButton.whenPressed(new MotionProfileTest(4000, 100));
 		AButton.toggle(new TankDrive(), new ArcadeDrive());
+		YButton.whenPressed(new GyroPID(90));
+		BButton.whenPressed(new SplineTest(501, 180, true));
 	}
 	
 	//Joystick get methods

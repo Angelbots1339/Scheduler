@@ -12,7 +12,7 @@ public class SplineTest extends CommandBase{
 		// TODO Auto-generated constructor stub
 		requires(Robot.chassis);
 		m_radius = radius;
-		m_angle = angle;
+		m_angle = Math.toRadians(angle);
 		m_direction = direction;
 	}
 

@@ -9,19 +9,19 @@ package org.usfirst.frc.team1339.utils;
  */
 public class Constants {
 	//Spline Constants
-	public static double robotWidth = 0;
+	public static double robotWidth = 1002;
 	public static double maxSplineVel = 2500;
 	
 	//Motion Profile Constants
 	public static double maxAcceleration = 3500;
 	public static double maxCruiseSpeed = 3000;
-	public static double motionProfileSlowScaleFactor = 0.5;
+	public static double motionProfileSlowScaleFactor = 0.25;
 	public static double motionProfileMediumScaleFactor = 0.65;
 	public static double motionProfileFastScaleFactor = 0.9;
 	
-	public static final double splineMPKp = 0.0008;
+	public static final double splineMPKp = 0.02;
 	public static final double splineMPKi = 0.0;
-	public static final double splineMPKd = 0.0;
+	public static final double splineMPKd = 0.0007;
 	public static final double splineMPKa = 0.00000005;
 	public static final double splineMPKv = 0.000005;
 	
@@ -110,10 +110,10 @@ public class Constants {
 	public static int kRollerMotor = 1;
 	public static int kLiftMotor = 10;
 	//Encoders
-	public static int kRightDriveAEncoder = 10;
-	public static int kRightDriveBEncoder = 11;
-	public static int kLeftDriveAEncoder = 12;
-	public static int kLeftDriveBEncoder = 13;
+	public static int kRightDriveAEncoder = 12;
+	public static int kRightDriveBEncoder = 13;
+	public static int kLeftDriveAEncoder = 10;//12
+	public static int kLeftDriveBEncoder = 11;//13
 	//Halleffects
 	public static int kLeftHallEffect = 5;
 	public static int kRightHallEffect = 4;

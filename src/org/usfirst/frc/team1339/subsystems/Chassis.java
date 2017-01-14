@@ -133,7 +133,11 @@ public class Chassis extends SubsystemBase{
     	chassisSP.calculate(Robot.HardwareAdapter.getLeftDriveEnc(), Robot.HardwareAdapter.getRightDriveEnc());
     	double leftSpeed = chassisSP.getLeftOutput();
     	double rightSpeed = chassisSP.getRightOutput();
-    	setMotorValues(leftSpeed, rightSpeed);
+    	Robot.HardwareAdapter.GyroPID.setSetpoint(Robot.chassis.chassisSP.getAngle());
+    	double gyroOutput = Robot.HardwareAdapter.GyroPID.calculate(Robot.HardwareAdapter.kSpartanGyro.getAngle());
+    	rightSpeed -= gyroOutput;
+    	leftSpeed += gyroOutput;
+    	setMotorValues(-leftSpeed, -rightSpeed);
     }
     
     public void calculate(){
@@ -159,6 +163,13 @@ public class Chassis extends SubsystemBase{
 
     	SmartDashboard.putNumber("MP speed", speedAvg);
 		  SmartDashboard.putNumber("Accel Array", avg);
+    }
+    
+    public void gyroPID(){
+    	double speed = Robot.HardwareAdapter.GyroPID.calculate(Robot.HardwareAdapter.kSpartanGyro.getAngle());
+    	double leftSpeed = -speed;
+    	double rightSpeed = speed;
+    	setMotorValues(leftSpeed, rightSpeed);
     }
 	
     public ArrayList<Double> getAvgAcc(){
