@@ -125,6 +125,13 @@ public class Chassis extends SubsystemBase{
     	setMotorValues(leftSpeed, rightSpeed);
     }
     
+    public void gyroPID(){
+    	double output = Robot.HardwareAdapter.GyroPID.calculate(Robot.HardwareAdapter.kSpartanGyro.getAngle());
+    	double right = -output;
+    	double left = output;
+    	setMotorValues(left, right);
+    }
+    
     public void calculate(){
     	double rightEncSpeed = Robot.HardwareAdapter.getRightDriveEncSpeed();
     	double rightSpeed = rightEncSpeed - lastRightSpeed;
