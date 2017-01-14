@@ -82,7 +82,7 @@ public class HardwareAdapter{
 		XButton.whenPressed(new MotionProfileTest(4000, 100));
 		AButton.toggle(new TankDrive(), new ArcadeDrive());
 		YButton.whenPressed(new GyroPID(90));
-		BButton.whenPressed(new SplineTest(501, 180, true));
+		BButton.whenPressed(new SplineTest(525, 180, true));
 	}
 	
 	//Joystick get methods
