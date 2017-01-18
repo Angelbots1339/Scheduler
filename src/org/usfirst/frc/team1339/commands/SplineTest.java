@@ -30,12 +30,6 @@ public class SplineTest extends CommandBase{
 		if(!Robot.chassis.chassisSP.isFinishedTrajectory()){
 			Robot.chassis.splineProfile();
 		}
-		/*
-		if(Robot.HardwareAdapter.GyroPID.onTarget(90)){
-			Robot.HardwareAdapter.GyroPID.setPID(0.09, 0.0, 0.4);
-			Robot.HardwareAdapter.GyroPID.setSetpoint(Math.toDegrees(m_angle));
-			Robot.chassis.gyroPID();
-		}*/
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1339.utils;
 
+import org.usfirst.frc.team1339.robot.Robot;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -9,7 +11,8 @@ public class SplineProfile {
 	splineCruiseVel, maxAcc, cruiseVelScaleFactor, splineRadius,
 	splineAngle, totalOuterDistance, lastInnerPos = 0, sumAngle = 0,
 	leftStartPos, rightStartPos, lastRightError = 0, startVel,
-	lastLeftError = 0, splineDecelerateVel, totalInnerDistance;
+	lastLeftError = 0, splineDecelerateVel, totalInnerDistance,
+	lastGyro = 0, startGyroAngle, sumGyroAngle;
 	private double lastTime;
 	public Segment currentOuterSegment = new Segment(0, 0, 0);
 	public Segment currentInnerSegment = new Segment(0, 0, 0);
@@ -140,10 +143,11 @@ public class SplineProfile {
 		return this.totalInnerDistance;
 	}
 	
-	public void initializeProfile(double leftCurrentPos, double rightCurrentPos){
+	public void initializeProfile(double leftCurrentPos, double rightCurrentPos, double currentGyroAngle){
 		sumAngle = 0;
 		this.leftStartPos = leftCurrentPos;
 		this.rightStartPos = rightCurrentPos;
+		this.startGyroAngle = currentGyroAngle;
 		currentOuterSegment = new Segment(0, this.startVel, 0);
 		currentInnerSegment = new Segment(0, this.startVel, 0);
 		nextOuterSegment = new Segment(0, 0, 0);
@@ -195,6 +199,11 @@ public class SplineProfile {
 			}
 		}
 		
+		double currentAngle = Math.abs(Robot.HardwareAdapter.kSpartanGyro.getAngle() - this.startGyroAngle);
+		/*double leftRadius = (leftDistance - this.leftStartPos) / Math.toRadians(currentAngle);
+		double rightRadius = (rightDistance - this.rightStartPos) / Math.toRadians(currentAngle);
+		this.width = Math.abs(leftRadius - rightRadius);*/
+		
 		if(getState() == MotionState.ACCELERATING){
 			nextOuterSegment.pos = currentOuterVel * dt + 0.5 * maxAcc * dt * dt;
 			nextOuterSegment.vel = currentOuterVel + dt * maxAcc;
@@ -236,6 +245,16 @@ public class SplineProfile {
 		currentInnerSegment.pos += nextInnerSegment.pos;
 		currentInnerSegment.vel = nextInnerSegment.vel;
 		currentInnerSegment.acc = nextInnerSegment.acc;
+		
+		double delta_gyro = Math.toRadians(currentAngle - this.lastGyro);
+		this.lastGyro = currentAngle;
+		
+		double gyroAngleDist = angle - delta_gyro;
+		
+		double gyroChangeDist = gyroAngleDist * this.splineRadius;
+		
+		currentOuterSegment.pos += gyroChangeDist;
+		this.totalOuterDistance += gyroChangeDist;
 		
 		double outerOutput = Kv * currentOuterSegment.vel + Ka * currentOuterSegment.acc;
 		double innerOutput = Kv * currentInnerSegment.vel + Ka * currentInnerSegment.acc;
