@@ -21,7 +21,8 @@ public class SplineTest extends CommandBase{
 		// TODO Auto-generated method stub\
 		//Robot.HardwareAdapter.GyroPID.setSetpoint(Math.toDegrees(m_angle));
 		Robot.chassis.chassisSP.configureSplineProfile(m_radius, m_angle, m_direction);
-		Robot.chassis.chassisSP.initializeProfile(Robot.HardwareAdapter.getLeftDriveEnc(), Robot.HardwareAdapter.getRightDriveEnc());
+		Robot.chassis.chassisSP.initializeProfile(Robot.HardwareAdapter.getLeftDriveEnc(), Robot.HardwareAdapter.getRightDriveEnc(),
+				Robot.HardwareAdapter.kSpartanGyro.getAngle());
 	}
 
 	@Override

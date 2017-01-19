@@ -145,6 +145,7 @@ public class SplineProfile {
 	
 	public void initializeProfile(double leftCurrentPos, double rightCurrentPos, double currentGyroAngle){
 		sumAngle = 0;
+		lastGyro = 0;
 		this.leftStartPos = leftCurrentPos;
 		this.rightStartPos = rightCurrentPos;
 		this.startGyroAngle = currentGyroAngle;
@@ -153,7 +154,6 @@ public class SplineProfile {
 		nextOuterSegment = new Segment(0, 0, 0);
 		nextInnerSegment = new Segment(0, 0, 0);
 		lastTime = Timer.getFPGATimestamp();
-		SmartDashboard.putNumber("Spline Goal", this.totalOuterDistance);
 	}
 	
 	public void calculate(double leftDistance, double rightDistance){
@@ -200,6 +200,9 @@ public class SplineProfile {
 		}
 		
 		double currentAngle = Math.abs(Robot.HardwareAdapter.kSpartanGyro.getAngle() - this.startGyroAngle);
+		if(this.splineBackwards){
+			currentAngle *= -1;
+		}
 		/*double leftRadius = (leftDistance - this.leftStartPos) / Math.toRadians(currentAngle);
 		double rightRadius = (rightDistance - this.rightStartPos) / Math.toRadians(currentAngle);
 		this.width = Math.abs(leftRadius - rightRadius);*/
@@ -225,7 +228,11 @@ public class SplineProfile {
 			nextOuterSegment.vel = 0;
 			nextOuterSegment.acc = 0;
 		}
-		
+		/*
+		nextOuterSegment.pos = splineCruiseVel * dt;
+		nextOuterSegment.vel = splineCruiseVel;
+		nextOuterSegment.acc = 0;
+		*/
 		double innerRadius = splineRadius - width;
 		double angle = nextOuterSegment.pos / splineRadius;
 		if(this.angleInverted != this.splineBackwards) sumAngle -= Math.toDegrees(angle);
@@ -249,9 +256,9 @@ public class SplineProfile {
 		double delta_gyro = Math.toRadians(currentAngle - this.lastGyro);
 		this.lastGyro = currentAngle;
 		
-		double gyroAngleDist = angle - delta_gyro;
+		double gyroAngleError = angle - delta_gyro;
 		
-		double gyroChangeDist = gyroAngleDist * this.splineRadius;
+		double gyroChangeDist = gyroAngleError * this.splineRadius;
 		
 		currentOuterSegment.pos += gyroChangeDist;
 		this.totalOuterDistance += gyroChangeDist;
@@ -285,6 +292,8 @@ public class SplineProfile {
 		double x_to_goal = this.totalOuterDistance - currentOuterSegment.pos;
 		double t_to_goal = Math.abs(x_to_goal / splineCruiseVel);
 	
+		SmartDashboard.putNumber("Spline Goal", this.totalOuterDistance);
+		
 		if(t_to_goal < dt){
 			trajectoryFinished = true;
 		}
