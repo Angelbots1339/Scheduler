@@ -6,7 +6,7 @@
 	<classpathentry kind="lib" path="libs/NetworkTables.jar" sourcepath="libs/NetworkTables-sources.jar"/>
 	<classpathentry kind="lib" path="libs/opencv.jar" sourcepath="libs/opencv-sources.jar"/>
 	<classpathentry kind="lib" path="libs/WPILib.jar" sourcepath="libs/WPILib-sources.jar"/>
-	<classpathentry kind="lib" path="libs/TalonSRXLibJava.jar"/>
+	<classpathentry kind="lib" path="libs/TalonSRXLibJava.jar" sourcepath="libs/TalonSRXLibJava.jar"/>
 	<classpathentry kind="var" path="wpilib" sourcepath="wpilib.sources"/>
 	<classpathentry kind="var" path="networktables" sourcepath="networktables.sources"/>
 	<classpathentry kind="var" path="opencv" sourcepath="opencv.sources"/>

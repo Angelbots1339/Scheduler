@@ -18,15 +18,19 @@ public class SplineTest extends CommandBase{
 
 	@Override
 	protected void init() {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub\
+		//Robot.HardwareAdapter.GyroPID.setSetpoint(Math.toDegrees(m_angle));
 		Robot.chassis.chassisSP.configureSplineProfile(m_radius, m_angle, m_direction);
-		Robot.chassis.chassisSP.initializeProfile(Robot.HardwareAdapter.getLeftDriveEnc(), Robot.HardwareAdapter.getRightDriveEnc());
+		Robot.chassis.chassisSP.initializeProfile(Robot.HardwareAdapter.getLeftDriveEnc(), Robot.HardwareAdapter.getRightDriveEnc(),
+				Robot.HardwareAdapter.kSpartanGyro.getAngle());
 	}
 
 	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
-		Robot.chassis.splineProfile();
+		if(!Robot.chassis.chassisSP.isFinishedTrajectory()){
+			Robot.chassis.splineProfile();
+		}
 	}
 
 	@Override
@@ -38,7 +42,7 @@ public class SplineTest extends CommandBase{
 	@Override
 	protected void end() {
 		// TODO Auto-generated method stub
-		Robot.chassis.setMotorValues(0, 0);
+		Robot.chassis.gyroPID();
 	}
 
 	@Override

@@ -131,12 +131,14 @@ public class Chassis extends SubsystemBase{
     
     public void splineProfile(){
     	chassisSP.calculate(Robot.HardwareAdapter.getLeftDriveEnc(), Robot.HardwareAdapter.getRightDriveEnc());
-    	double leftSpeed = chassisSP.getLeftOutput();
-    	double rightSpeed = chassisSP.getRightOutput();
-    	Robot.HardwareAdapter.GyroPID.setSetpoint(Robot.chassis.chassisSP.getAngle());
-    	double gyroOutput = Robot.HardwareAdapter.GyroPID.calculate(Robot.HardwareAdapter.kSpartanGyro.getAngle());
-    	rightSpeed -= gyroOutput;
-    	leftSpeed += gyroOutput;
+    	double leftSpeed = chassisSP.getLeftOutput() * 0.5;
+    	double rightSpeed = chassisSP.getRightOutput() * 0.5;
+    	//Robot.HardwareAdapter.GyroPID.setSetpoint(Robot.chassis.chassisSP.getAngle());
+    	//double gyroOutput = Robot.HardwareAdapter.GyroPID.calculate(Robot.HardwareAdapter.kSpartanGyro.getAngle());
+    	//rightSpeed -= gyroOutput;
+    	//leftSpeed += gyroOutput;
+    	//SmartDashboard.putNumber("gyro output", gyroOutput);
+    	SmartDashboard.putNumber("spline speed", -leftSpeed);
     	setMotorValues(-leftSpeed, -rightSpeed);
     }
     
@@ -166,7 +168,7 @@ public class Chassis extends SubsystemBase{
     }
     
     public void gyroPID(){
-    	double speed = Robot.HardwareAdapter.GyroPID.calculate(Robot.HardwareAdapter.kSpartanGyro.getAngle());
+    	double speed = Robot.HardwareAdapter.GyroPID.calculate(Robot.HardwareAdapter.kSpartanGyro.getAngle()) * 4;
     	double leftSpeed = -speed;
     	double rightSpeed = speed;
     	setMotorValues(leftSpeed, rightSpeed);
