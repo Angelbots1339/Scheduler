@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1339.utils;
 
+import org.usfirst.frc.team1339.auto.commandgroups.CommandGroupTest;
 import org.usfirst.frc.team1339.commands.ArcadeDrive;
 import org.usfirst.frc.team1339.commands.GyroPID;
 import org.usfirst.frc.team1339.commands.MotionProfileTest;
@@ -79,10 +80,9 @@ public class HardwareAdapter{
 	}
 	
 	public void checkTriggers(){
-		XButton.whenPressed(new MotionProfileTest(4000, 100));
-		AButton.toggle(new TankDrive(), new ArcadeDrive());
-		YButton.whenPressed(new GyroPID(90));
-		BButton.whenPressed(new SplineTest(2421, -180, true));
+		XButton.whenPressed(new MotionProfileTest(4000, 100, 1500));
+		BButton.whenPressed(new CommandGroupTest());
+		//BButton.whenPressed(new SplineTest(2421, -180, true));
 	}
 	
 	//Joystick get methods

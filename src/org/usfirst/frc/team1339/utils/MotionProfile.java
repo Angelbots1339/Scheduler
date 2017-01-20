@@ -11,7 +11,7 @@ public class MotionProfile {
 	private double Kp, Ki, Kd, Ka, Kv, goal, cruiseVel,
 	maxAcc, cruiseVelScaleFactor, lastRightError = 0,
 	lastLeftError = 0, rightOutput = 0, leftOutput = 0,
-	leftStartPos, rightStartPos;
+	leftStartPos, rightStartPos, decelerateVel;
 	private double lastTime;
 	public Segment initialSegment = new Segment(0, 0, 0);
 	public Segment currentSegment = new Segment(0, 0, 0);
@@ -55,7 +55,7 @@ public class MotionProfile {
 		}
 	}
 	
-	public void configureNewProfile(double distance){
+	public void configureNewProfile(double distance, double decelerateSpeed){
 		this.goal = distance;
 		this.maxAcc = Constants.maxAcceleration;
 		this.cruiseVelScaleFactor = Constants.motionProfileFastScaleFactor;
@@ -69,6 +69,7 @@ public class MotionProfile {
 		this.currentSegment = new Segment(0, 0, 0);
 		setState(MotionState.ACCELERATING);
 		lastTime = Timer.getFPGATimestamp();
+		this.decelerateVel = decelerateSpeed;
 	}
 	
 	public void configureNewProfile(double Kp, double Ki, double Kd, double Ka,
@@ -119,7 +120,7 @@ public class MotionProfile {
 		double t_to_cruise = (cruiseVel - currentVel) / maxAcc; //time to accelerate to cruise speed
 		double x_to_cruise = currentVel * t_to_cruise + .5 * maxAcc * t_to_cruise * t_to_cruise; //distance to get to cruise speed
 		
-		double t_to_zero = Math.abs(currentVel / maxAcc); //time to get to zero speed from cruise speed
+		double t_to_zero = Math.abs((currentVel -  this.decelerateVel)/ maxAcc); //time to get to zero speed from cruise speed
 		double x_to_zero = currentVel * t_to_zero - .5 * maxAcc * t_to_zero * t_to_zero; //distance to get to zero speed
 		
 		double cruiseX;

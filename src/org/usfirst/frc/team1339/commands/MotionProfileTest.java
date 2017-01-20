@@ -5,19 +5,20 @@ import org.usfirst.frc.team1339.robot.Robot;
 
 public class MotionProfileTest extends CommandBase {
 	
-	private double m_goal, tolerance, initialLeft, initialRight;
+	private double m_goal, tolerance, initialLeft, initialRight, m_decelerateVel;
 	private int counter;
 	
-	public MotionProfileTest(double goal, double input_tolerance){
+	public MotionProfileTest(double goal, double input_tolerance, double decelerateVel){
 		requires(Robot.chassis);
 		m_goal = goal;
 		tolerance = input_tolerance;
+		m_decelerateVel = decelerateVel;
 	}
 
 	protected void init() {
 		// TODO Auto-generated method stub
 		Robot.HardwareAdapter.GyroPID.setSetpoint(Robot.HardwareAdapter.kSpartanGyro.getAngle());
-		Robot.HardwareAdapter.ChassisMP.configureNewProfile(m_goal);
+		Robot.HardwareAdapter.ChassisMP.configureNewProfile(m_goal, m_decelerateVel);
 		initialLeft = Robot.HardwareAdapter.getLeftDriveEnc();
 		initialRight = Robot.HardwareAdapter.getRightDriveEnc();
 		Robot.HardwareAdapter.ChassisMP.initializeProfile(initialLeft, initialRight);
@@ -40,12 +41,12 @@ public class MotionProfileTest extends CommandBase {
 
 	protected void end() {
 		// TODO Auto-generated method stub
-		Robot.chassis.setMotorValues(0, 0);
+		//Robot.chassis.setMotorValues(0, 0);
 	}
 
 	protected void interrupted() {
 		// TODO Auto-generated method stub
-		Robot.chassis.setMotorValues(0, 0);
+		//Robot.chassis.setMotorValues(0, 0);
 	}
 
 }
