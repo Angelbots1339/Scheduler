@@ -34,6 +34,7 @@ public class TeleOp {
 		SmartDashboard.putNumber("encoderConversion", getClicksInches(26));
 		SmartDashboard.putNumber("Spline Angle", Robot.chassis.chassisSP.getAngle());
 		SmartDashboard.putNumber("inner dist", Robot.chassis.chassisSP.getInnerDistance());
+		SmartDashboard.putNumber("Outer dist", Robot.chassis.chassisSP.getOuterDistance());
 		SmartDashboard.putNumber("Gyro rate change", Robot.HardwareAdapter.kSpartanGyro.getRate());
     }
     /** This method is called before TeleOp has run.*/

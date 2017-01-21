@@ -80,7 +80,7 @@ public class HardwareAdapter{
 	}
 	
 	public void checkTriggers(){
-		XButton.whenPressed(new MotionProfileTest(4000, 100, 1500));
+		XButton.whenPressed(new SplineTest(2000, 90, 0, 0, true));
 		BButton.whenPressed(new CommandGroupTest());
 		//BButton.whenPressed(new SplineTest(2421, -180, true));
 	}

@@ -11,8 +11,8 @@ public class SplineProfile {
 	splineCruiseVel, maxAcc, cruiseVelScaleFactor, splineRadius,
 	splineAngle, totalOuterDistance, lastInnerPos = 0, sumAngle = 0,
 	leftStartPos, rightStartPos, lastRightError = 0, startVel,
-	lastLeftError = 0, splineDecelerateVel, totalInnerDistance,
-	lastGyro = 0, startGyroAngle, sumGyroAngle;
+	lastLeftError = 0, totalInnerDistance,
+	lastGyro = 0, startGyroAngle, sumGyroAngle, decelerateVel;
 	private double lastTime;
 	public Segment currentOuterSegment = new Segment(0, 0, 0);
 	public Segment currentInnerSegment = new Segment(0, 0, 0);
@@ -35,7 +35,7 @@ public class SplineProfile {
 		nextOuterSegment = new Segment(0, 0, 0);
 		nextInnerSegment = new Segment(0, 0, 0);
 	}
-	
+
 	private static class Segment{
 		public double pos, vel, acc;
 		
@@ -88,7 +88,7 @@ public class SplineProfile {
 		setState(MotionState.ACCELERATING);
 	}
 	
-	public void configureSplineProfile(double radius, double angle, double startVel, boolean direction){
+	public void configureSplineProfile(double radius, double angle, double startVel, double decelerateVel, boolean direction){
 		this.trajectoryFinished = false;
 		this.angleInverted = angle < 0;
 		this.maxAcc = Constants.maxAcceleration;
@@ -113,6 +113,7 @@ public class SplineProfile {
 		}
 		else rightOuter = true;
 		this.startVel = startVel;
+		this.decelerateVel = decelerateVel;
 		setState(MotionState.ACCELERATING);
 	}
 	
@@ -143,6 +144,10 @@ public class SplineProfile {
 		return this.totalInnerDistance;
 	}
 	
+	public double getOuterDistance(){
+		return this.totalOuterDistance;
+	}
+	
 	public void initializeProfile(double leftCurrentPos, double rightCurrentPos, double currentGyroAngle){
 		sumAngle = 0;
 		lastGyro = 0;
@@ -169,7 +174,7 @@ public class SplineProfile {
 		double t_to_cruise = Math.abs((this.splineCruiseVel - currentOuterVel) / maxAcc); //time to accelerate to cruise speed
 		double x_to_cruise = currentOuterVel * t_to_cruise + .5 * maxAcc * t_to_cruise * t_to_cruise; //distance to get to cruise speed
 		
-		double t_to_zero = Math.abs((currentOuterVel - this.splineDecelerateVel) / maxAcc); //time to get to zero speed from cruise speed
+		double t_to_zero = Math.abs((currentOuterVel) / maxAcc); //time to get to zero speed from cruise speed
 		double x_to_zero = currentOuterVel * t_to_zero - .5 * maxAcc * t_to_zero * t_to_zero; //distance to get to zero speed
 				
 		double cruiseX;
@@ -225,7 +230,7 @@ public class SplineProfile {
 		else{
 			nextOuterSegment.pos = 0;
 			currentOuterSegment.pos = this.totalOuterDistance;
-			nextOuterSegment.vel = 0;
+			nextOuterSegment.vel = this.decelerateVel;
 			nextOuterSegment.acc = 0;
 		}
 		/*
@@ -300,6 +305,6 @@ public class SplineProfile {
 	}
 	
 	public boolean isFinishedTrajectory() {
-        return trajectoryFinished;
+        return this.trajectoryFinished;
     }
 }

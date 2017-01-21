@@ -168,15 +168,14 @@ public class MotionProfile {
 		else{
 			nextSegment.pos = 0;
 			currentSegment.pos = goal;
-			nextSegment.vel = 0;
+			nextSegment.vel = this.decelerateVel;
 			nextSegment.acc = 0;
 		}
 		
 		currentSegment.pos += nextSegment.pos;
 		currentSegment.vel = nextSegment.vel;
 		currentSegment.acc = nextSegment.acc;
-		
-		System.out.println("pos" + currentSegment.pos);
+
 		//System.out.println("cruiseVel" + cruiseVel);
 		double output = Kv * currentSegment.vel + Ka * currentSegment.acc;
 		
@@ -203,8 +202,7 @@ public class MotionProfile {
 	}
 	
 	public boolean isFinishedTrajectory() {
-        return currentSegment.pos == goal
-                && currentSegment.vel == 0;
+        return currentSegment.pos == goal;
     }
 	
 	public double getGoal(){

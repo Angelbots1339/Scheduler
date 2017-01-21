@@ -5,15 +5,17 @@ import org.usfirst.frc.team1339.robot.Robot;
 
 public class SplineTest extends CommandBase{
 
-	double m_radius, m_angle;
+	double m_radius, m_angle, m_startVel, m_decelerateVel;
 	boolean m_direction;
 	
-	public SplineTest(double radius, double angle, boolean direction) {
+	public SplineTest(double radius, double angle, double startVel, double decelerateVel, boolean direction) {
 		// TODO Auto-generated constructor stub
 		requires(Robot.chassis);
 		m_radius = radius;
 		m_angle = Math.toRadians(angle);
 		m_direction = direction;
+		m_startVel = startVel;
+		m_decelerateVel = decelerateVel;
 	}
 
 	@Override
@@ -48,7 +50,7 @@ public class SplineTest extends CommandBase{
 	@Override
 	protected void interrupted() {
 		// TODO Auto-generated method stub
-		Robot.chassis.setMotorValues(0, 0);
+		//Robot.chassis.setMotorValues(0, 0);
 	}
 
 }

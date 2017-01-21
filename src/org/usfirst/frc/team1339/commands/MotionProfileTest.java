@@ -36,7 +36,7 @@ public class MotionProfileTest extends CommandBase {
 
 	public boolean isFinished() {
 		// TODO Auto-generated method stub
-		return Robot.HardwareAdapter.ChassisMP.isFinishedTrajectory() && counter >= 5;
+		return Robot.HardwareAdapter.ChassisMP.isFinishedTrajectory() && counter >= -1;
 	}
 
 	protected void end() {
