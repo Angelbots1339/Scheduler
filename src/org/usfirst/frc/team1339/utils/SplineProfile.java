@@ -59,7 +59,7 @@ public class SplineProfile {
 	private MotionState getState(){
 		return state;
 	}
-	
+	//
 	public void configureSplineProfile(double radius, double angle, boolean direction) {
 		this.trajectoryFinished = false;
 		this.maxAcc = Constants.maxAcceleration;
